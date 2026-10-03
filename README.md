@@ -15,7 +15,7 @@ A local desktop application for managing tasks, events and reminders, built with
 1. [Overview](#1-overview)
 2. [Technology Stack](#2-technology-stack)
 3. [Project Structure](#3-project-structure)
-4. [Getting Started](#4-getting-started)
+4. [Installation](#4-installation)
 5. [Architecture](#5-architecture)
 6. [Domain Model](#6-domain-model)
 7. [Database](#7-database)
@@ -118,31 +118,89 @@ personal_scheduler/
 
 ---
 
-## 4. Getting Started
+## 4. Installation
+
+There are two ways to install Personal Scheduler. **Option A** runs it directly from the source code; **Option B** builds a standalone `.exe` you can copy and launch like any other Windows program.
 
 ### Requirements
 
-- Windows
-- Python **3.10 or newer** ([python.org](https://www.python.org/downloads/); tick *"Add Python to PATH"* during installation)
+| Requirement | Needed for |
+|-------------|------------|
+| Windows | Running the app (the project is built and tested for Windows) |
+| [Python 3.10 or newer](https://www.python.org/downloads/) | Option A, and building the `.exe` in Option B. Tick **"Add Python to PATH"** during installation |
+| [Git](https://git-scm.com/downloads) (optional) | Cloning the repository; you can download a ZIP instead |
 
-### Installation
+Check that Python is installed:
 
 ```bash
-cd personal_scheduler
+python --version
+```
 
+### Option A: Run from source
+
+**1. Get the code**
+
+```bash
+git clone https://github.com/<your-username>/personal_scheduler.git
+cd personal_scheduler
+```
+
+No Git? On the GitHub page choose **Code → Download ZIP**, extract it, and open a terminal in the extracted `personal_scheduler` folder.
+
+**2. Create a virtual environment**
+
+```bash
 python -m venv venv
 venv\Scripts\activate
+```
 
+In PowerShell, use `venv\Scripts\Activate.ps1` instead. Your prompt should now start with `(venv)`.
+
+**3. Install the dependencies**
+
+```bash
 pip install -r requirements.txt
 ```
 
-### Run
+This installs PySide6 (the only third-party package). To verify:
+
+```bash
+python -c "import PySide6; print(PySide6.__version__)"
+```
+
+**4. Start the app**
 
 ```bash
 python main.py
 ```
 
-The database is created automatically on first launch with five default categories (*Study, Work, Personal, Exercise, Other*) and a default user named *Student*.
+Next time, you only need to activate the virtual environment (step 2, second command) and run `python main.py`.
+
+> Keep the project in a writable location such as Documents or Desktop, not inside `Program Files`.
+
+### Option B: Build and install the `.exe`
+
+**1. Build it.** From the project folder, run:
+
+```bash
+build_exe.bat
+```
+
+The script creates a virtual environment, installs PySide6 and PyInstaller, and builds the app. When it finishes, the program is in:
+
+```text
+dist\PersonalScheduler\PersonalScheduler.exe
+```
+
+**2. Install it.** Copy the **whole** `dist\PersonalScheduler` folder to where you want to keep the program (for example `C:\Users\<you>\Apps\PersonalScheduler`). The `.exe` needs the files next to it, so do not move the `.exe` on its own.
+
+**3. Create a shortcut (optional).** Right-click `PersonalScheduler.exe` and choose **Send to → Desktop (create shortcut)**.
+
+**4. Start it with Windows (optional).** Reminders only arrive while the app is running. Press `Win + R`, type `shell:startup`, and put a shortcut to `PersonalScheduler.exe` in the folder that opens. This is a Windows feature, not a setting inside the app.
+
+### First launch
+
+On the first start the app creates its database with five default categories (*Study, Work, Personal, Exercise, Other*) and a default user named *Student*. You can change the name in **Settings**.
 
 ### Where your data is stored
 
@@ -151,7 +209,23 @@ The database is created automatically on first launch with five default categori
 | From source (`python main.py`) | `data/scheduler.db` inside the project folder |
 | Packaged `.exe` | `%LOCALAPPDATA%\PersonalScheduler\scheduler.db` |
 
-> **Tip:** when running from source, keep the project in a writable location (Documents, Desktop), not inside `Program Files`.
+### Updating
+
+- **From source:** run `git pull` (or replace the files with a newer ZIP), then `pip install -r requirements.txt`. Your database is kept.
+- **`.exe`:** rebuild with `build_exe.bat` and replace the old `PersonalScheduler` folder. Your data is stored separately in `%LOCALAPPDATA%`, so it is kept.
+
+### Uninstalling
+
+- **From source:** delete the project folder (this includes `venv` and `data/scheduler.db`).
+- **`.exe`:** delete the `PersonalScheduler` folder and any shortcuts. To also remove your data, delete `%LOCALAPPDATA%\PersonalScheduler`.
+
+### Verify the installation (optional)
+
+```bash
+python -m unittest discover -s tests -t .
+```
+
+All 23 tests should pass. See [Testing](#17-testing).
 
 ---
 
