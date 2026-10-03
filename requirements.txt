@@ -1,0 +1,3 @@
+PySide6>=6.6
+ipywidgets>=8
+matplotlib>=3.7
