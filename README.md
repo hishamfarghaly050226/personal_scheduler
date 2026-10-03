@@ -54,18 +54,6 @@ The project is also a worked example of object-oriented design: a layered archit
 | **Statistics** | Totals, completion percentage, overdue count, tasks by category |
 | **Personalization** | Light and dark themes; profile settings |
 
-![Dashboard](docs/screenshots/dashboard.png)
-
-| Calendar | Calendar (dark) |
-|:--:|:--:|
-| ![Calendar](docs/screenshots/calendar.png) | ![Calendar dark](docs/screenshots/calendar_dark.png) |
-
-| Tasks | Statistics |
-|:--:|:--:|
-| ![Tasks](docs/screenshots/tasks.png) | ![Statistics](docs/screenshots/statistics.png) |
-
----
-
 ## 2. Technology Stack
 
 | Component | Technology |
